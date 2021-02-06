@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { Button } from '../index';
 
-const PizzaBlock = ({ imageUrl, name, types, sizes, price }) => {
+const PizzaBlock = ({ id, imageUrl, name, types, sizes, price, onClickAddPizza, addedCount }) => {
   const avalibleTypes = ['тонкое', 'традиционное'];
   const avalibleSizes = [26, 30, 40];
   const [activeType, setActiveType] = useState(types[0]);
@@ -12,6 +13,17 @@ const PizzaBlock = ({ imageUrl, name, types, sizes, price }) => {
   };
   const onSelectSize = (index) => {
     setActiveSize(index);
+  };
+  const onAddPizza = () => {
+    const obj = {
+      id,
+      name,
+      imageUrl,
+      price,
+      size: activeSize,
+      type: avalibleTypes[activeType]
+    };
+    onClickAddPizza(obj);
   };
 
   return (
@@ -50,7 +62,7 @@ const PizzaBlock = ({ imageUrl, name, types, sizes, price }) => {
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
-        <div className="button button--outline button--add">
+        <Button onClick={onAddPizza} className="button--add" outline>
           <svg
             width="12"
             height="12"
@@ -63,8 +75,8 @@ const PizzaBlock = ({ imageUrl, name, types, sizes, price }) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>2</i>
-        </div>
+          {addedCount && <i>{addedCount}</i>}
+        </Button>
       </div>
     </div>
   );
@@ -75,7 +87,9 @@ PizzaBlock.propTypes = {
   name: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.number),
   sizes: PropTypes.arrayOf(PropTypes.number),
-  price: PropTypes.number
+  price: PropTypes.number,
+  onClickAddPizza: PropTypes.func,
+  addedCount: PropTypes.number
 };
 
 PizzaBlock.dafaultProps = {
@@ -83,7 +97,9 @@ PizzaBlock.dafaultProps = {
   name: '---',
   types: [],
   sizes: [],
-  price: ''
+  price: '',
+  onClickAddPizza: () => {},
+  addedCount: 0
 };
 
 export { PizzaBlock };
