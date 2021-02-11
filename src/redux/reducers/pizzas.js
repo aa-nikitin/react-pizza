@@ -1,16 +1,22 @@
-import { SET_LOADED, SET_PIZZAS } from '../constants';
-const initialState = { items: [], isLoaded: false };
+import { handleActions } from 'redux-actions';
+import { combineReducers } from 'redux';
+import { setLoaded, setPizzas } from '../actions';
 
-const pizzas = (state = initialState, { type, payload }) => {
-  switch (type) {
-    case SET_LOADED:
-      return { ...state, isLoaded: payload };
+const isLoaded = handleActions(
+  {
+    [setLoaded]: (_state, { payload }) => payload,
+    [setPizzas]: () => true
+  },
+  false
+);
 
-    case SET_PIZZAS:
-      return { ...state, items: payload, isLoaded: true };
-    default:
-      return state;
-  }
-};
+const items = handleActions(
+  {
+    [setPizzas]: (_state, { payload }) => payload
+  },
+  []
+);
 
-export default pizzas;
+export const getPizzas = ({ pizzas }) => pizzas;
+
+export default combineReducers({ isLoaded, items });

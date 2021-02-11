@@ -2,10 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from './';
 
-const CartItem = ({ id, name, image, type, size, totalPrice, totalCount, onRemove, onCount }) => {
+const CartItem = ({
+  id,
+  name,
+  image,
+  type,
+  size,
+  price,
+  totalPrice,
+  totalCount,
+  onRemove,
+  onCount
+}) => {
   const removePizza = () => {
-    if (window.confirm('Вы действительно хотите удалить Пиццу')) onRemove(id);
+    if (window.confirm('Вы действительно хотите удалить Пиццу'))
+      onRemove({ id, totalPrice, totalCount });
   };
+
+  const countIncrease = () => onCount({ id, price, totalCount, sign: 1 });
+  const countDecrease = () => onCount({ id, price, totalCount, sign: -1 });
 
   return (
     <div className="cart__item">
@@ -20,7 +35,7 @@ const CartItem = ({ id, name, image, type, size, totalPrice, totalCount, onRemov
       </div>
       <div className="cart__item-count">
         <div
-          onClick={() => onCount(id, 'dec')}
+          onClick={countDecrease}
           className="button button--outline button--circle cart__item-count-minus">
           <svg
             width="10"
@@ -40,7 +55,7 @@ const CartItem = ({ id, name, image, type, size, totalPrice, totalCount, onRemov
         </div>
         <b>{totalCount}</b>
         <div
-          onClick={() => onCount(id, 'inc')}
+          onClick={countIncrease}
           className="button button--outline button--circle cart__item-count-plus">
           <svg
             width="10"
@@ -91,9 +106,11 @@ CartItem.propTypes = {
   image: PropTypes.string,
   type: PropTypes.string,
   size: PropTypes.number,
+  price: PropTypes.number,
   totalPrice: PropTypes.number,
   totalCount: PropTypes.number,
-  onRemove: PropTypes.func
+  onRemove: PropTypes.func,
+  onCount: PropTypes.func
 };
 
 CartItem.dafaultProps = {
@@ -102,9 +119,11 @@ CartItem.dafaultProps = {
   image: '',
   type: '',
   size: 0,
+  price: 0,
   totalPrice: 0,
   totalCount: 0,
-  onRemove: () => {}
+  onRemove: () => {},
+  onCount: () => {}
 };
 
 export { CartItem };

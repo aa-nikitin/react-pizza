@@ -3,6 +3,8 @@ import pizzas from './pizzas';
 import filters from './filters';
 import cart from './cart';
 
-const rootReducer = combineReducers({ pizzas, filters, cart });
+export * from './pizzas';
+export * from './filters';
+export * from './cart';
 
-export default rootReducer;
+export default combineReducers({ pizzas, filters, cart });

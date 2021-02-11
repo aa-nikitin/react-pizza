@@ -2,9 +2,8 @@ import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Categories, SortPopup, PizzaBlock, PizzaLoadingBlock } from '../components';
-import { setCategory, setSortBy } from '../redux/actions/filters';
-import { addPizzaToCart } from '../redux/actions/cart';
-import { setFetchPizzas } from '../redux/actions/pizzas';
+import { setFetchPizzas, setCategory, setSortBy, addPizzaToCart } from '../redux/actions';
+import { getPizzas, getFilters, getCartItems } from '../redux/reducers';
 
 const categoryNames = ['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 const sortItems = [
@@ -14,10 +13,9 @@ const sortItems = [
 ];
 
 const Home = () => {
-  const pizzas = useSelector(({ pizzas }) => pizzas.items);
-  const isLoaded = useSelector(({ pizzas }) => pizzas.isLoaded);
-  const cartItems = useSelector(({ cart }) => cart.items);
-  const { category, sortBy } = useSelector(({ filters }) => filters);
+  const { items: pizzas, isLoaded } = useSelector((state) => getPizzas(state));
+  const { category, sortBy } = useSelector((state) => getFilters(state));
+  const cartItems = useSelector((state) => getCartItems(state));
   const dispatch = useDispatch();
   const onClickCategory = useCallback(
     (index) => {
@@ -31,14 +29,12 @@ const Home = () => {
     },
     [dispatch]
   );
-  const handleAddPizzaToCart = (obj) => {
-    // console.log(obj);
-    dispatch(addPizzaToCart(obj));
-  };
+  const handleAddPizzaToCart = (obj) => dispatch(addPizzaToCart(obj));
+
   useEffect(() => {
     dispatch(setFetchPizzas(category, sortBy));
   }, [category, sortBy, dispatch]);
-  // console.log(cartItems);
+
   return (
     <div className="container">
       <div className="content__top">

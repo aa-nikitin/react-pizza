@@ -3,26 +3,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { CartItem } from '../components';
-import { clearCart, removeCartItem, countCartItem } from '../redux/actions/cart';
+import { clearCart, removeCartItem, countCartItem } from '../redux/actions';
+import { getCart } from '../redux/reducers';
 
 import cartEmptyImage from '../assets/img/empty-cart.png';
 
 const Cart = () => {
-  const { totalCount, totalPrice, items } = useSelector(({ cart }) => cart);
+  const { totalCount, totalPrice, items } = useSelector((state) => getCart(state));
   const addedPizzas = Object.keys(items).map((key) => items[key].items[0]);
   const dispatch = useDispatch();
-  // console.log(addedPizzas);
   const onClearCart = () => {
     if (window.confirm('Вы действительно хотите очистить корзину?')) dispatch(clearCart());
   };
-  const onRemoveItemCart = (idPizza) => {
-    // console.log(idPizza);
-    dispatch(removeCartItem(idPizza));
-  };
-  const countPizzaItem = (idPizza, typeSymbol) => {
-    // console.log(idPizza);
-    dispatch(countCartItem({ id: idPizza, typeSymbol }));
-  };
+  const onRemoveItemCart = (obj) => dispatch(removeCartItem(obj));
+
+  const countPizzaItem = (obj) => dispatch(countCartItem(obj));
+
   return (
     <div className="container container--cart">
       {totalCount ? (
@@ -100,7 +96,7 @@ const Cart = () => {
             </div>
           </div>
           <div className="content__items">
-            {addedPizzas.map(({ id, name, imageUrl, type, size }) => (
+            {addedPizzas.map(({ id, name, imageUrl, type, size, price }) => (
               <CartItem
                 key={id}
                 id={id}
@@ -108,6 +104,7 @@ const Cart = () => {
                 type={type}
                 size={size}
                 image={imageUrl}
+                price={price}
                 totalPrice={items[id].totalPrice}
                 totalCount={items[id].items.length}
                 onRemove={onRemoveItemCart}

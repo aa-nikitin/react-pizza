@@ -1,18 +1,23 @@
-import { SET_LOADED, SET_PIZZAS } from '../constants';
+import { createActions } from 'redux-actions';
 import { fetchPizzas } from '../../api';
 
-export const setFetchPizzas = (category, sortBy) => (dispatch) => {
+const setFetchPizzas = (category, sortBy) => (dispatch) => {
   dispatch(setLoaded(false));
   fetchPizzas(category, sortBy).then((pizzas) => {
     dispatch(setPizzas(pizzas));
   });
 };
 
-export const setLoaded = (payload) => ({
-  type: SET_LOADED,
-  payload
-});
-export const setPizzas = (items) => ({
-  type: SET_PIZZAS,
-  payload: items
-});
+const {
+  set: { loaded: setLoaded, pizzas: setPizzas }
+} = createActions(
+  {
+    SET: {
+      LOADED: null,
+      PIZZAS: null
+    }
+  },
+  { namespace: '_' }
+);
+
+export { setLoaded, setPizzas, setFetchPizzas };

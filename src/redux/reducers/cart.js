@@ -1,83 +1,63 @@
+import { handleActions } from 'redux-actions';
+import { combineReducers } from 'redux';
+import produce from 'immer';
 import _ from 'lodash';
-import {
-  ADD_PIZZA_CART,
-  CLEAR_CART,
-  REMOVE_CART_ITEM,
-  COUNT_CART_ITEM /*SET_TOTAL_PRICE, SET_TOTAL_COUNT*/
-} from '../constants';
-const initialState = { items: {}, totalPrice: 0, totalCount: 0 };
+import { addPizzaToCart, clearCart, removeCartItem, countCartItem } from '../actions';
 
 const getTotalPrice = (arr) => arr.reduce((total, obj) => total + obj.price, 0);
 
-const totalSum = (newItems, path) =>
-  Object.keys(newItems).reduce((sum, key) => _.get(newItems[key], path) + sum, 0);
+const items = handleActions(
+  {
+    [addPizzaToCart]: (state, { payload }) =>
+      produce(state, (draft) => {
+        draft[payload.id] = {
+          items: !draft[payload.id] ? [payload] : [...draft[payload.id].items, payload]
+        };
+        draft[payload.id].totalPrice = getTotalPrice(draft[payload.id].items);
+      }),
+    [clearCart]: () => {},
+    [removeCartItem]: (state, { payload }) => _.omit(state, [payload.id]),
+    [countCartItem]: (state, { payload }) =>
+      produce(state, (draft) => {
+        const dropItems =
+          payload.totalCount > 1 ? _.drop(state[payload.id].items) : [...state[payload.id].items];
 
-const cart = (state = initialState, { type, payload }) => {
-  switch (type) {
-    case ADD_PIZZA_CART: {
-      const currentPizzaItems = !state.items[payload.id]
-        ? [payload]
-        : [...state.items[payload.id].items, payload];
-      const newItems = {
-        ...state.items,
-        [payload.id]: {
-          items: currentPizzaItems,
-          totalPrice: getTotalPrice(currentPizzaItems)
-        }
-      };
-      const totalPrice = totalSum(newItems, 'totalPrice');
-      const totalCount = totalSum(newItems, 'items.length');
+        const newItems =
+          payload.sign === -1
+            ? dropItems
+            : [...state[payload.id].items, state[payload.id].items[0]];
+        draft[payload.id] = { items: newItems, totalPrice: getTotalPrice(newItems) };
+      })
+  },
+  {}
+);
 
-      return {
-        ...state,
-        items: newItems,
-        totalPrice: totalPrice,
-        totalCount: totalCount
-      };
-    }
-    case CLEAR_CART:
-      return initialState;
-    case REMOVE_CART_ITEM: {
-      const newItems = { ...state.items };
-      const currentTotalPrice = newItems[payload].totalPrice;
-      const currentTotalCount = newItems[payload].items.length;
-      const newCartItems = _.omit(state.items, [payload]);
+const totalPrice = handleActions(
+  {
+    [addPizzaToCart]: (state, { payload }) => state + payload.price,
+    [clearCart]: () => 0,
+    [removeCartItem]: (state, { payload }) => state - payload.totalPrice,
+    [countCartItem]: (state, { payload }) =>
+      payload.totalCount + payload.sign > 0 ? state + payload.price * payload.sign : state
+  },
+  0
+);
+const totalCount = handleActions(
+  {
+    [addPizzaToCart]: (state) => ++state,
+    [clearCart]: () => 0,
+    [removeCartItem]: (state, { payload }) => state - payload.totalCount,
+    [countCartItem]: (state, { payload }) =>
+      payload.totalCount + payload.sign > 0 ? state + payload.sign : state
+  },
+  0
+);
 
-      return {
-        items: newCartItems,
-        totalPrice: state.totalPrice - currentTotalPrice,
-        totalCount: state.totalCount - currentTotalCount
-      };
-    }
-    case COUNT_CART_ITEM: {
-      const dropItems =
-        state.items[payload.id].items.length > 1
-          ? _.drop(state.items[payload.id].items)
-          : [...state.items[payload.id].items];
+export const getCart = ({ cart }) => cart;
+export const getCartItems = ({ cart }) => cart.items;
+export const getCartHeader = ({ cart: { totalCount, totalPrice } }) => ({
+  totalCount,
+  totalPrice
+});
 
-      const newItems =
-        payload.typeSymbol === 'dec'
-          ? dropItems
-          : [...state.items[payload.id].items, state.items[payload.id].items[0]];
-      const allNewItems = {
-        ...state.items,
-        [payload.id]: {
-          ...state.items[payload.id],
-          items: newItems,
-          totalPrice: getTotalPrice(newItems)
-        }
-      };
-
-      return {
-        ...state,
-        items: allNewItems,
-        totalCount: totalSum(allNewItems, 'items.length'),
-        totalPrice: totalSum(allNewItems, 'totalPrice')
-      };
-    }
-    default:
-      return state;
-  }
-};
-
-export default cart;
+export default combineReducers({ items, totalPrice, totalCount });

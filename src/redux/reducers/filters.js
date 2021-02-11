@@ -1,16 +1,21 @@
-import { SET_SORT_BY, SET_CATEGORY } from '../constants';
-const initialState = { category: null, sortBy: 'popular' };
+import { handleActions } from 'redux-actions';
+import { combineReducers } from 'redux';
+import { setSortBy, setCategory } from '../actions';
 
-const filters = (state = initialState, { type, payload }) => {
-  switch (type) {
-    case SET_SORT_BY:
-      return { ...state, sortBy: payload };
-    case SET_CATEGORY:
-      return { ...state, category: payload };
+const sortBy = handleActions(
+  {
+    [setSortBy]: (_state, { payload }) => payload
+  },
+  'popular'
+);
 
-    default:
-      return state;
-  }
-};
+const category = handleActions(
+  {
+    [setCategory]: (_state, { payload }) => payload
+  },
+  null
+);
 
-export default filters;
+export const getFilters = ({ filters }) => filters;
+
+export default combineReducers({ sortBy, category });
