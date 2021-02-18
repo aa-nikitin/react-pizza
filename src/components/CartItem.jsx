@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from './';
+import { avalibleTypes } from '../constants';
 
 const CartItem = ({
   id,
@@ -15,12 +16,14 @@ const CartItem = ({
   onCount
 }) => {
   const removePizza = () => {
+    const idPizza = `${type}-${size}`;
     if (window.confirm('Вы действительно хотите удалить Пиццу'))
-      onRemove({ id, totalPrice, totalCount });
+      onRemove({ id, totalPrice, totalCount, idPizza });
   };
+  const idPizza = `${type}-${size}`;
 
-  const countIncrease = () => onCount({ id, price, totalCount, sign: 1 });
-  const countDecrease = () => onCount({ id, price, totalCount, sign: -1 });
+  const countIncrease = () => onCount({ id, price, totalCount, sign: 1, idPizza });
+  const countDecrease = () => onCount({ id, price, totalCount, sign: -1, idPizza });
 
   return (
     <div className="cart__item">
@@ -30,7 +33,7 @@ const CartItem = ({
       <div className="cart__item-info">
         <h3>{name}</h3>
         <p>
-          {type} тесто, {size} см.
+          {avalibleTypes[type]} тесто, {size} см.
         </p>
       </div>
       <div className="cart__item-count">
@@ -104,7 +107,7 @@ CartItem.propTypes = {
   id: PropTypes.number,
   name: PropTypes.string,
   image: PropTypes.string,
-  type: PropTypes.string,
+  // type: PropTypes.string,
   size: PropTypes.number,
   price: PropTypes.number,
   totalPrice: PropTypes.number,
@@ -117,7 +120,7 @@ CartItem.dafaultProps = {
   id: 0,
   name: '',
   image: '',
-  type: '',
+  // type: '',
   size: 0,
   price: 0,
   totalPrice: 0,

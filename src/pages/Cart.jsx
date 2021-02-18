@@ -10,7 +10,9 @@ import cartEmptyImage from '../assets/img/empty-cart.png';
 
 const Cart = () => {
   const { totalCount, totalPrice, items } = useSelector((state) => getCart(state));
-  const addedPizzas = Object.keys(items).map((key) => items[key].items[0]);
+  const addedPizzas = Object.keys(items).map((key) =>
+    Object.keys(items[key]).map((keyItem) => items[key][keyItem])
+  );
   const dispatch = useDispatch();
   const onClearCart = () => {
     if (window.confirm('Вы действительно хотите очистить корзину?')) dispatch(clearCart());
@@ -18,6 +20,8 @@ const Cart = () => {
   const onRemoveItemCart = (obj) => dispatch(removeCartItem(obj));
 
   const countPizzaItem = (obj) => dispatch(countCartItem(obj));
+
+  // console.log(addedPizzas);
 
   return (
     <div className="container container--cart">
@@ -96,13 +100,34 @@ const Cart = () => {
             </div>
           </div>
           <div className="content__items">
-            {addedPizzas.map(({ id, name, imageUrl, type, size, price }) => (
+            {addedPizzas.map((arr) => {
+              return arr.map(({ id, name, imageUrl, type, size, price, count, totalPrice }) => {
+                // console.log(totalPrice);
+                return (
+                  <CartItem
+                    key={`${id}-${type.id}-${size.id}`}
+                    id={id}
+                    name={name}
+                    type={type.id}
+                    size={size.id}
+                    image={imageUrl}
+                    price={price}
+                    totalPrice={totalPrice}
+                    totalCount={count}
+                    // totalCount={items[id].items.length}
+                    onRemove={onRemoveItemCart}
+                    onCount={countPizzaItem}
+                  />
+                );
+              });
+            })}
+            {/* {addedPizzas.map(({ id, name, imageUrl, type, size, price }) => (
               <CartItem
                 key={id}
                 id={id}
                 name={name}
-                type={type}
-                size={size}
+                type={type.id}
+                size={size.id}
                 image={imageUrl}
                 price={price}
                 totalPrice={items[id].totalPrice}
@@ -110,7 +135,7 @@ const Cart = () => {
                 onRemove={onRemoveItemCart}
                 onCount={countPizzaItem}
               />
-            ))}
+            ))} */}
           </div>
           <div className="cart__bottom">
             <div className="cart__bottom-details">

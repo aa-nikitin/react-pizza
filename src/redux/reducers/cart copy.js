@@ -4,45 +4,30 @@ import produce from 'immer';
 import _ from 'lodash';
 import { addPizzaToCart, clearCart, removeCartItem, countCartItem } from '../actions';
 
+const getTotalPrice = (arr) => arr.reduce((total, obj) => total + obj.price, 0);
+
 const items = handleActions(
   {
     [addPizzaToCart]: (state, { payload }) =>
       produce(state, (draft) => {
-        const idPizzaCart = `${payload.type.id}-${payload.size.id}`;
-        draft[payload.id] = !draft[payload.id]
-          ? {
-              [idPizzaCart]: {
-                ...payload,
-                count: 1,
-                totalPrice: payload.price
-              }
-            }
-          : {
-              ...draft[payload.id],
-              [idPizzaCart]: {
-                ...payload,
-                count: draft[payload.id][idPizzaCart]
-                  ? draft[payload.id][idPizzaCart].count + 1
-                  : 1,
-                totalPrice: draft[payload.id][idPizzaCart]
-                  ? payload.price * (draft[payload.id][idPizzaCart].count + 1)
-                  : payload.price
-              }
-            };
+        draft[payload.id] = {
+          items: !draft[payload.id] ? [payload] : [...draft[payload.id].items, payload]
+        };
+        draft[payload.id].totalPrice = getTotalPrice(draft[payload.id].items);
       }),
     [clearCart]: () => {},
-    [removeCartItem]: (state, { payload }) =>
+    [removeCartItem]: (state, { payload }) => _.omit(state, [payload.id]),
+    [countCartItem]: (state, { payload }) =>
       produce(state, (draft) => {
-        draft[payload.id] = _.omit(state[payload.id], [payload.idPizza]);
-      }),
-    [countCartItem]: (state, { payload }) => {
-      return produce(state, (draft) => {
-        const newCount = draft[payload.id][payload.idPizza].count + payload.sign;
-        const price = draft[payload.id][payload.idPizza].price;
-        draft[payload.id][payload.idPizza].count = newCount < 1 ? 1 : newCount;
-        draft[payload.id][payload.idPizza].totalPrice = newCount < 1 ? price : newCount * price;
-      });
-    }
+        const dropItems =
+          payload.totalCount > 1 ? _.drop(state[payload.id].items) : [...state[payload.id].items];
+
+        const newItems =
+          payload.sign === -1
+            ? dropItems
+            : [...state[payload.id].items, state[payload.id].items[0]];
+        draft[payload.id] = { items: newItems, totalPrice: getTotalPrice(newItems) };
+      })
   },
   {}
 );

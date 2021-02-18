@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Button } from '../index';
+import { avalibleTypes } from '../../constants';
 
-const PizzaBlock = ({ id, imageUrl, name, types, sizes, price, onClickAddPizza, addedCount }) => {
-  const avalibleTypes = ['тонкое', 'традиционное'];
-  const avalibleSizes = [26, 30, 40];
-  const [activeType, setActiveType] = useState(types[0]);
-  const [activeSize, setActiveSize] = useState(sizes[0]);
+const PizzaBlock = ({ id, imageUrl, name, types, sizes, onClickAddPizza, addedCount }) => {
+  const [activeType, setActiveType] = useState(types.filter((type) => type.price > 0)[0]);
+  const [activeSize, setActiveSize] = useState(sizes.filter((size) => size.price > 0)[0]);
+  const sumPrice = () => activeType.price + activeSize.price;
   const onSelectType = (index) => {
     setActiveType(index);
   };
@@ -19,12 +19,13 @@ const PizzaBlock = ({ id, imageUrl, name, types, sizes, price, onClickAddPizza, 
       id,
       name,
       imageUrl,
-      price,
+      price: sumPrice(),
       size: activeSize,
-      type: avalibleTypes[activeType]
+      type: activeType
     };
     onClickAddPizza(obj);
   };
+  const idPizzaCart = `${activeType.id}-${activeSize.id}`;
 
   return (
     <div className="pizza-block">
@@ -32,36 +33,38 @@ const PizzaBlock = ({ id, imageUrl, name, types, sizes, price, onClickAddPizza, 
       <h4 className="pizza-block__title">{name}</h4>
       <div className="pizza-block__selector">
         <ul>
-          {avalibleTypes.map((type, index) => (
-            <li
-              key={type}
-              className={classNames({
-                active: activeType === index,
-                disabled: !types.includes(index)
-              })}
-              onClick={() => onSelectType(index)}>
-              {type}
-            </li>
-          ))}
-        </ul>
-        <ul>
-          {avalibleSizes.map((size) => {
+          {types.map((type) => {
             return (
               <li
-                key={size}
+                key={type.id}
                 className={classNames({
-                  active: activeSize === size,
-                  disabled: !sizes.includes(size)
+                  active: activeType.id === type.id,
+                  disabled: type.price <= 0
+                })}
+                onClick={() => onSelectType(type)}>
+                {avalibleTypes[type.id]}
+              </li>
+            );
+          })}
+        </ul>
+        <ul>
+          {sizes.map((size) => {
+            return (
+              <li
+                key={size.id}
+                className={classNames({
+                  active: activeSize.id === size.id,
+                  disabled: size.price <= 0
                 })}
                 onClick={() => onSelectSize(size)}>
-                {size} см.
+                {size.id} см.
               </li>
             );
           })}
         </ul>
       </div>
       <div className="pizza-block__bottom">
-        <div className="pizza-block__price">от {price} ₽</div>
+        <div className="pizza-block__price">{sumPrice()} ₽</div>
         <Button onClick={onAddPizza} className="button--add" outline>
           <svg
             width="12"
@@ -75,7 +78,7 @@ const PizzaBlock = ({ id, imageUrl, name, types, sizes, price, onClickAddPizza, 
             />
           </svg>
           <span>Добавить</span>
-          {addedCount && <i>{addedCount}</i>}
+          {addedCount && addedCount[idPizzaCart] && <i>{addedCount[idPizzaCart].count}</i>}
         </Button>
       </div>
     </div>
@@ -85,11 +88,12 @@ const PizzaBlock = ({ id, imageUrl, name, types, sizes, price, onClickAddPizza, 
 PizzaBlock.propTypes = {
   imageUrl: PropTypes.string,
   name: PropTypes.string,
-  types: PropTypes.arrayOf(PropTypes.number),
-  sizes: PropTypes.arrayOf(PropTypes.number),
+  types: PropTypes.arrayOf(PropTypes.object),
+  sizes: PropTypes.arrayOf(PropTypes.object),
   price: PropTypes.number,
   onClickAddPizza: PropTypes.func,
-  addedCount: PropTypes.number
+  addedCount: PropTypes.object,
+  count: PropTypes.number
 };
 
 PizzaBlock.dafaultProps = {
@@ -99,7 +103,8 @@ PizzaBlock.dafaultProps = {
   sizes: [],
   price: '',
   onClickAddPizza: () => {},
-  addedCount: 0
+  addedCount: {},
+  count: 0
 };
 
 export { PizzaBlock };

@@ -48,14 +48,17 @@ const Home = () => {
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {isLoaded
-          ? pizzas.map((item) => (
-              <PizzaBlock
-                onClickAddPizza={handleAddPizzaToCart}
-                key={item.id}
-                addedCount={cartItems[item.id] && cartItems[item.id].items.length}
-                {...item}
-              />
-            ))
+          ? pizzas.map((item) => {
+              // console.log(cartItems[item.id]);
+              return (
+                <PizzaBlock
+                  onClickAddPizza={handleAddPizzaToCart}
+                  key={item.id}
+                  addedCount={cartItems[item.id] && cartItems[item.id]}
+                  {...item}
+                />
+              );
+            })
           : Array(12)
               .fill(null)
               .map((_, index) => <PizzaLoadingBlock key={index} />)}
