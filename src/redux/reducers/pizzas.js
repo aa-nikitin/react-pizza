@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { combineReducers } from 'redux';
-import { setLoaded, setPizzas } from '../actions';
+import { setLoaded, setPizzas, setRefresh } from '../actions';
 
 const isLoaded = handleActions(
   {
@@ -17,6 +17,13 @@ const items = handleActions(
   []
 );
 
+const refresh = handleActions(
+  {
+    [setRefresh]: (_state, { payload }) => payload
+  },
+  true
+);
 export const getPizzas = ({ pizzas }) => pizzas;
+export const getPizzasRefresh = ({ pizzas }) => pizzas.refresh;
 
-export default combineReducers({ isLoaded, items });
+export default combineReducers({ isLoaded, items, refresh });

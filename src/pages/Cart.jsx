@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { CartItem } from '../components';
-import { clearCart, removeCartItem, countCartItem } from '../redux/actions';
+import { clearCart, removeCartItem, countCartItem, setRefresh } from '../redux/actions';
 import { getCart } from '../redux/reducers';
 
 import cartEmptyImage from '../assets/img/empty-cart.png';
@@ -22,6 +22,10 @@ const Cart = () => {
   const countPizzaItem = (obj) => dispatch(countCartItem(obj));
 
   // console.log(addedPizzas);
+
+  useEffect(() => {
+    dispatch(setRefresh(false));
+  }, [dispatch]);
 
   return (
     <div className="container container--cart">

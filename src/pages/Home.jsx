@@ -12,7 +12,7 @@ const sortItems = [
   { name: 'алфавиту', type: 'name' }
 ];
 
-const Home = () => {
+const Home = (e) => {
   const { items: pizzas, isLoaded } = useSelector((state) => getPizzas(state));
   const { category, sortBy } = useSelector((state) => getFilters(state));
   const cartItems = useSelector((state) => getCartItems(state));
@@ -30,9 +30,11 @@ const Home = () => {
     [dispatch]
   );
   const handleAddPizzaToCart = (obj) => dispatch(addPizzaToCart(obj));
-
+  // const prevPizzas = usePrevious(pizzas);
+  // const diffPizzas = _.isEqual(prevPizzas ? prevPizzas : [], pizzas);
+  // console.log(e);
   useEffect(() => {
-    dispatch(setFetchPizzas(category, sortBy));
+    dispatch(setFetchPizzas());
   }, [category, sortBy, dispatch]);
 
   return (
