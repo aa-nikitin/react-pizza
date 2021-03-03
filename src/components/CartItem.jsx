@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from './';
 import { avalibleTypes } from '../constants';
+import { InputNumber } from '../components';
 
 const CartItem = ({
   id,
@@ -22,8 +23,9 @@ const CartItem = ({
   };
   const idPizza = `${type}-${size}`;
 
-  const countIncrease = () => onCount({ id, price, totalCount, sign: 1, idPizza });
-  const countDecrease = () => onCount({ id, price, totalCount, sign: -1, idPizza });
+  const handleCount = (count, sign) => {
+    onCount({ id, price, count, totalCount, sign: sign, idPizza });
+  };
 
   return (
     <div className="cart__item">
@@ -37,7 +39,8 @@ const CartItem = ({
         </p>
       </div>
       <div className="cart__item-count">
-        <div
+        <InputNumber min={1} value={totalCount} onChange={handleCount} />
+        {/* <div
           onClick={countDecrease}
           className="button button--outline button--circle cart__item-count-minus">
           <svg
@@ -75,7 +78,7 @@ const CartItem = ({
               fill="#EB5A1E"
             />
           </svg>
-        </div>
+        </div> */}
       </div>
       <div className="cart__item-price">
         <b>{totalPrice} ₽</b>

@@ -4,15 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Categories, SortPopup, PizzaBlock, PizzaLoadingBlock } from '../components';
 import { setFetchPizzas, setCategory, setSortBy, addPizzaToCart } from '../redux/actions';
 import { getPizzas, getFilters, getCartItems } from '../redux/reducers';
+import { categories as categoryNames, sortItems } from '../constants';
 
-const categoryNames = ['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
-const sortItems = [
-  { name: 'популярности', type: 'popular' },
-  { name: 'цене', type: 'price' },
-  { name: 'алфавиту', type: 'name' }
-];
-
-const Home = (e) => {
+const Home = () => {
   const { items: pizzas, isLoaded } = useSelector((state) => getPizzas(state));
   const { category, sortBy } = useSelector((state) => getFilters(state));
   const cartItems = useSelector((state) => getCartItems(state));
@@ -30,9 +24,7 @@ const Home = (e) => {
     [dispatch]
   );
   const handleAddPizzaToCart = (obj) => dispatch(addPizzaToCart(obj));
-  // const prevPizzas = usePrevious(pizzas);
-  // const diffPizzas = _.isEqual(prevPizzas ? prevPizzas : [], pizzas);
-  // console.log(e);
+
   useEffect(() => {
     dispatch(setFetchPizzas());
   }, [category, sortBy, dispatch]);

@@ -311,3 +311,20 @@ body {
     }
   }
 }
+
+.admin-panel {
+  &__top {
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__item {
+    margin-bottom: 20px;
+    width: 50%;
+  }
+}

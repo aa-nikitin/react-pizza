@@ -118,28 +118,12 @@ const Cart = () => {
                     price={price}
                     totalPrice={totalPrice}
                     totalCount={count}
-                    // totalCount={items[id].items.length}
                     onRemove={onRemoveItemCart}
                     onCount={countPizzaItem}
                   />
                 );
               });
             })}
-            {/* {addedPizzas.map(({ id, name, imageUrl, type, size, price }) => (
-              <CartItem
-                key={id}
-                id={id}
-                name={name}
-                type={type.id}
-                size={size.id}
-                image={imageUrl}
-                price={price}
-                totalPrice={items[id].totalPrice}
-                totalCount={items[id].items.length}
-                onRemove={onRemoveItemCart}
-                onCount={countPizzaItem}
-              />
-            ))} */}
           </div>
           <div className="cart__bottom">
             <div className="cart__bottom-details">

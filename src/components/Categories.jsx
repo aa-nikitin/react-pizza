@@ -11,13 +11,13 @@ const Categories = memo(({ activeCategory, items, onClickCategory }) => {
           Все
         </li>
         {items &&
-          items.map((item, index) => {
+          items.map((item) => {
             return (
               <li
-                className={index === activeCategory ? 'active' : ''}
-                onClick={() => onClickCategory(index)}
-                key={`${item}_${index}`}>
-                {item}
+                className={item.value === activeCategory ? 'active' : ''}
+                onClick={() => onClickCategory(item.value)}
+                key={`${item.value}`}>
+                {item.label}
               </li>
             );
           })}
@@ -28,7 +28,7 @@ const Categories = memo(({ activeCategory, items, onClickCategory }) => {
 
 Categories.propTypes = {
   activeCategory: PropTypes.number,
-  items: PropTypes.arrayOf(PropTypes.string),
+  items: PropTypes.arrayOf(PropTypes.object),
   onClickCategory: PropTypes.func
 };
 Categories.defaultProps = { activeCategory: null, items: [], onClickCategory: () => {} };

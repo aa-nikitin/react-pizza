@@ -37,10 +37,9 @@ const items = handleActions(
       }),
     [countCartItem]: (state, { payload }) => {
       return produce(state, (draft) => {
-        const newCount = draft[payload.id][payload.idPizza].count + payload.sign;
         const price = draft[payload.id][payload.idPizza].price;
-        draft[payload.id][payload.idPizza].count = newCount < 1 ? 1 : newCount;
-        draft[payload.id][payload.idPizza].totalPrice = newCount < 1 ? price : newCount * price;
+        draft[payload.id][payload.idPizza].count = payload.count;
+        draft[payload.id][payload.idPizza].totalPrice = payload.count * price;
       });
     }
   },
