@@ -1,19 +1,17 @@
 import { handleActions } from 'redux-actions';
 import { combineReducers } from 'redux';
-import { setSortBy, setCategory, setFetchPizzas } from '../actions';
+import { setSortBy, setCategory } from '../actions';
 
 const sortBy = handleActions(
   {
-    [setSortBy]: (_state, { payload }) => payload,
-    [setFetchPizzas]: (state, { payload }) => (payload ? 'popular' : state)
+    [setSortBy]: (_state, { payload }) => payload
   },
   'popular'
 );
 
 const category = handleActions(
   {
-    [setCategory]: (_state, { payload }) => payload,
-    [setFetchPizzas]: (state, { payload }) => (payload ? null : state)
+    [setCategory]: (_state, { payload }) => payload
   },
   null
 );

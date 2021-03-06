@@ -1,11 +1,8 @@
 import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import Select from 'react-select';
 import { categories as options } from '../constants';
-// import NumericInput from 'react-numeric-input';
-
-import { Portal, InputNumber } from './';
+import { Portal, SelectCategory, RaitingNumber } from './';
 
 const PopupForm = ({
   id,
@@ -47,7 +44,7 @@ const PopupForm = ({
                 priceSize26: validPrice,
                 priceSize30: validPrice,
                 priceSize40: validPrice,
-                categoryPizza: Yup.string().required('Выберите категорию'),
+                categoryPizza: Yup.string().required('категория не выбрана'),
                 raitingPizza: Yup.number()
                   .typeError('должно быть числом')
                   .required('Укажите рейтинг от 1 до 10')
@@ -56,84 +53,86 @@ const PopupForm = ({
                 console.log(values);
               }}>
               <Form>
-                <div>
-                  <label htmlFor="imagePizza">Изображение</label>
-                  <Field name="imagePizza" type="text" />
-                  <ErrorMessage name="imagePizza" />
+                <div className="field-pizza">
+                  <label className="field-pizza__label" htmlFor="imagePizza">
+                    Изображение
+                  </label>
+                  <Field className="field-pizza__input" name="imagePizza" type="text" />
+                  <ErrorMessage className="field-pizza__error" name="imagePizza" />
                 </div>
-                <div>
-                  <label htmlFor="namePizza">Наименование пиццы</label>
-                  <Field name="namePizza" type="text" />
-                  <ErrorMessage name="namePizza" />
+                <div className="field-pizza">
+                  <label className="field-pizza__label" htmlFor="namePizza">
+                    Наименование пиццы
+                  </label>
+                  <Field className="field-pizza__input" name="namePizza" type="text" />
+                  <ErrorMessage className="field-pizza__error" name="namePizza" />
                 </div>
-                <div>
-                  <div>
-                    <label htmlFor="priceThin">Тонкое тесто, руб.</label>
-                    <Field name="priceThin" type="text" />
-                    <ErrorMessage name="priceThin" />
+                <div className="fields-pizza-price">
+                  <div className="field-pizza">
+                    <label className="field-pizza__label" htmlFor="priceThin">
+                      Тонкое тесто, руб.
+                    </label>
+                    <Field className="field-pizza__input" name="priceThin" type="text" />
+                    <ErrorMessage className="field-pizza__error" name="priceThin" />
                   </div>
-                  <div>
-                    <label htmlFor="priceThick">Толстое тесто, руб.</label>
-                    <Field name="priceThick" type="text" />
-                    <ErrorMessage name="priceThick" />
-                  </div>
-                </div>
-                <div>
-                  <div>
-                    <label htmlFor="priceSize26">Размер 26 см, руб.</label>
-                    <Field name="priceSize26" type="text" />
-                    <ErrorMessage name="priceSize26" />
-                  </div>
-                  <div>
-                    <label htmlFor="priceSize30">Размер 30 см, руб.</label>
-                    <Field name="priceSize30" type="text" />
-                    <ErrorMessage name="priceSize30" />
-                  </div>
-                  <div>
-                    <label htmlFor="priceSize40">Размер 40 см, руб.</label>
-                    <Field name="priceSize40" type="text" />
-                    <ErrorMessage name="priceSize40" />
+                  <div className="field-pizza">
+                    <label className="field-pizza__label" htmlFor="priceThick">
+                      Толстое тесто, руб.
+                    </label>
+                    <Field className="field-pizza__input" name="priceThick" type="text" />
+                    <ErrorMessage className="field-pizza__error" name="priceThick" />
                   </div>
                 </div>
-                <div>
-                  <label htmlFor="categoryPizza">Категория</label>
+                <div className="fields-pizza-price">
+                  <div className="field-pizza">
+                    <label className="field-pizza__label" htmlFor="priceSize26">
+                      Размер 26 см, руб.
+                    </label>
+                    <Field className="field-pizza__input" name="priceSize26" type="text" />
+                    <ErrorMessage className="field-pizza__error" name="priceSize26" />
+                  </div>
+                  <div className="field-pizza">
+                    <label className="field-pizza__label" htmlFor="priceSize30">
+                      Размер 30 см, руб.
+                    </label>
+                    <Field className="field-pizza__input" name="priceSize30" type="text" />
+                    <ErrorMessage className="field-pizza__error" name="priceSize30" />
+                  </div>
+                  <div className="field-pizza">
+                    <label className="field-pizza__label" htmlFor="priceSize40">
+                      Размер 40 см, руб.
+                    </label>
+                    <Field className="field-pizza__input" name="priceSize40" type="text" />
+                    <ErrorMessage className="field-pizza__error" name="priceSize40" />
+                  </div>
+                </div>
+                <div className="field-pizza">
+                  <label className="field-pizza__label" htmlFor="categoryPizza">
+                    Категория
+                  </label>
                   <Field
+                    className="field-pizza__input"
                     name="categoryPizza"
-                    component={({ options, field, form }) => (
-                      <Select
-                        options={options}
-                        name={field.name}
-                        value={
-                          options ? options.find((option) => option.value === field.value) : ''
-                        }
-                        onChange={(option) => form.setFieldValue(field.name, option.value)}
-                        onBlur={field.onBlur}
-                        placeholder="Выберите категорию..."
-                      />
-                    )}
+                    component={SelectCategory}
                     options={options}
                   />
-                  <ErrorMessage name="categoryPizza" />
+                  <ErrorMessage className="field-pizza__error" name="categoryPizza" />
                 </div>
-                <div>
-                  <label htmlFor="raitingPizza">Рейтинг</label>
+                <div className="field-pizza">
+                  <label className="field-pizza__label" htmlFor="raitingPizza">
+                    Рейтинг (от 1 до 10)
+                  </label>
                   <Field
+                    className="field-pizza__input"
                     name="raitingPizza"
-                    component={({ min, max, field, form }) => (
-                      <InputNumber
-                        min={min}
-                        max={max}
-                        value={field.value}
-                        onChange={(value) => form.setFieldValue(field.name, value)}
-                      />
-                    )}
+                    component={RaitingNumber}
                     min={1}
                     max={10}
                   />
-                  <ErrorMessage name="raitingPizza" />
+                  <ErrorMessage className="field-pizza__error" name="raitingPizza" />
                 </div>
 
-                <button type="submit">Submit</button>
+                <button type="submit">Сохранить</button>
               </Form>
             </Formik>
             <div>

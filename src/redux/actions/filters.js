@@ -1,15 +1,12 @@
 import { createActions } from 'redux-actions';
 
 const {
-  set: { sortby: setSortBy, category: setCategory }
-} = createActions(
-  {
-    SET: {
-      SORTBY: null,
-      CATEGORY: null
-    }
-  },
-  { namespace: '_' }
-);
+  filters: { sortby: setSortBy, category: setCategory }
+} = createActions({
+  FILTERS: {
+    SORTBY: null,
+    CATEGORY: null
+  }
+});
 
 export { setSortBy, setCategory };

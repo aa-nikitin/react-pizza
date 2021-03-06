@@ -1,0 +1,7 @@
+.select-category {
+  & > div {
+    &:hover {
+      border-color: #fe5f1e;
+    }
+  }
+}

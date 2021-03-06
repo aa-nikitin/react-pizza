@@ -10,3 +10,4 @@ export * from './AdminPizza';
 export * from './PopUpHoc';
 export * from './PopupForm';
 export * from './InputNumber';
+export * from './InputsForFormik';

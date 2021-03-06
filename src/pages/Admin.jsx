@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFetchPizzas } from '../redux/actions';
-import { getPizzas } from '../redux/reducers';
+import { setFetchPizzasForAdmin, setRefresh } from '../redux/actions';
+import { getPizzasAdmin } from '../redux/reducers';
 import { Button, AdminPizza, PopUpHoc, PopupForm } from '../components';
 
 const Admin = ({ activePopup, openPopup, closePopup, popupRef }) => {
-  const { items: pizzas } = useSelector((state) => getPizzas(state));
+  const pizzas = useSelector((state) => getPizzasAdmin(state));
   const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(setFetchPizzas(true));
+    dispatch(setFetchPizzasForAdmin());
+    dispatch(setRefresh(false));
   }, [dispatch]);
 
   return (
