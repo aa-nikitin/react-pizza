@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import { setFetchPizzasForAdmin, setRefresh } from '../redux/actions';
 import { getPizzasAdmin } from '../redux/reducers';
 import { Button, AdminPizza, PopUpHoc, PopupForm } from '../components';
@@ -33,7 +34,7 @@ const Admin = ({ activePopup, openPopup, closePopup, popupRef }) => {
           </Button>
         </div>
         <div className="admin-panel__items">
-          {pizzas.map(({ id, imageUrl, name, types, sizes, category, rating }) => {
+          {pizzas.map(({ id, imageUrl, name, types, sizes, category, rating, description }) => {
             return (
               <AdminPizza
                 id={id}
@@ -44,22 +45,24 @@ const Admin = ({ activePopup, openPopup, closePopup, popupRef }) => {
                 key={id}
                 category={category}
                 rating={rating}
+                description={description}
               />
             );
           })}
         </div>
       </div>
       <PopupForm
-        id="xxx"
         imageUrl=""
         name=""
         types=""
         sizes=""
         category=""
         rating={1}
+        description=""
         popupRef={popupRef}
         closePopup={closePopup}
         activePopup={activePopup}
+        typeAction="add"
       />
     </div>
   );
@@ -68,6 +71,20 @@ const Admin = ({ activePopup, openPopup, closePopup, popupRef }) => {
 const AdminWrapped = () => {
   const HOC = PopUpHoc(Admin);
   return <HOC />;
+};
+
+Admin.propTypes = {
+  activePopup: PropTypes.bool,
+  openPopup: PropTypes.func,
+  closePopup: PropTypes.func,
+  popupRef: PropTypes.object
+};
+
+Admin.dafaultProps = {
+  activePopup: true,
+  openPopup: () => {},
+  closePopup: () => {},
+  popupRef: {}
 };
 
 export { AdminWrapped as Admin };

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from './';
-import { avalibleTypes } from '../constants';
+import { avalibleTypes, pizzaImgStub } from '../constants';
 import { InputNumber } from '../components';
 
 const CartItem = ({
@@ -30,7 +30,7 @@ const CartItem = ({
   return (
     <div className="cart__item">
       <div className="cart__item-img">
-        <img className="pizza-block__image" src={image} alt="Pizza" />
+        <img className="pizza-block__image" src={image ? image : pizzaImgStub} alt="Pizza" />
       </div>
       <div className="cart__item-info">
         <h3>{name}</h3>

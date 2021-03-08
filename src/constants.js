@@ -13,3 +13,5 @@ export const sortItems = [
   { name: 'цене', type: 'price' },
   { name: 'алфавиту', type: 'name' }
 ];
+
+export const pizzaImgStub = 'https://chaykov.velostrana.ru/assets/images/server_s_foto.svg';

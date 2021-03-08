@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 function PopUpHoc(WrappedComponent) {
   const [activePopup, setActivePopup] = useState(false);
@@ -30,5 +31,13 @@ function PopUpHoc(WrappedComponent) {
     );
   };
 }
+
+PopUpHoc.propTypes = {
+  WrappedComponent: PropTypes.func
+};
+
+PopUpHoc.dafaultProps = {
+  WrappedComponent: () => {}
+};
 
 export { PopUpHoc };
