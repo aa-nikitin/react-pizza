@@ -1,4 +1,6 @@
 {
   "port": 8080,
-  "mongoUri": "mongodb+srv://Aleksander:1234qwer@cluster0.bmcna.mongodb.net/app?retryWrites=true&w=majority"
+  "mongoUri": "mongodb://localhost:27017/app"
+  // "mongoUri": "mongodb+srv://Aleksander:1234qwer@cluster0.llsjr.mongodb.net/app?retryWrites=true&w=majority"
+  // "mongoUri": "mongodb+srv://Aleksander:1234qwer@cluster0.bmcna.mongodb.net/app?retryWrites=true&w=majority"
 }

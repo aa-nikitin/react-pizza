@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "server": "nodemon app.js"
+    "server": "nodemon app.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [
     "pizza"
@@ -16,7 +18,8 @@
     "config": "^3.3.6",
     "express": "^4.17.1",
     "formidable": "^1.2.2",
-    "mongoose": "^5.11.19"
+    "mongoose": "^5.11.19",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "concurrently": "^6.0.0",

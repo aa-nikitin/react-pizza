@@ -100,7 +100,7 @@ const PizzaBlock = ({
 };
 
 PizzaBlock.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   imageUrl: PropTypes.string,
   name: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.object),
@@ -111,7 +111,7 @@ PizzaBlock.propTypes = {
 };
 
 PizzaBlock.dafaultProps = {
-  id: 0,
+  id: '',
   imageUrl: '',
   name: '---',
   types: [],
