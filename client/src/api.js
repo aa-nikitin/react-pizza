@@ -8,8 +8,14 @@ export const fetchPizzas = (category, sortBy) =>
     .then(({ data }) => data);
 
 export const fetchChangePizzas = (obj, id, typeAction) =>
-  typeAction === 'edit'
-    ? axios.put(`/pizzas/${id}`, obj).then(({ data }) => data)
-    : axios.post(`/pizzas`, obj).then(({ data }) => data);
-
+  axios
+    .post(`/api/pizzas${typeAction === 'edit' ? `/${id}` : ''}`, obj, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then(({ data }) => data.message)
+    .catch((e) => {
+      throw e.response.data;
+    });
 export const fetchDeletePizzas = (id) => axios.delete(`/pizzas/${id}`).then(({ data }) => data);

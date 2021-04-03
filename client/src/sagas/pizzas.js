@@ -46,40 +46,20 @@ export function* addPizza({
     description
   }
 }) {
+  // console.log(imagePizza);
   try {
-    const pizzaObj = yield {
-      imageUrl: imagePizza,
-      name: namePizza,
-      types: [
-        {
-          id: 0,
-          price: Number(priceThin)
-        },
-        {
-          id: 1,
-          price: Number(priceThick)
-        }
-      ],
-      sizes: [
-        {
-          id: 26,
-          price: Number(priceSize26)
-        },
-        {
-          id: 30,
-          price: Number(priceSize30)
-        },
-        {
-          id: 40,
-          price: Number(priceSize40)
-        }
-      ],
-      price: 300,
-      category: categoryPizza,
-      rating: raitingPizza,
-      description: description
-    };
-    const pizza = yield call(fetchChangePizzas, pizzaObj, id, typeAction);
+    const formData = new FormData();
+    formData.append('images', imagePizza);
+    formData.append('name', namePizza);
+    formData.append('priceThin', Number(priceThin));
+    formData.append('priceThick', Number(priceThick));
+    formData.append('priceSize26', Number(priceSize26));
+    formData.append('priceSize30', Number(priceSize30));
+    formData.append('priceSize40', Number(priceSize40));
+    formData.append('categoryPizza', categoryPizza);
+    formData.append('raitingPizza', raitingPizza);
+    formData.append('description', description);
+    const pizza = yield call(fetchChangePizzas, formData, id, typeAction);
     const pizzaMsg =
       typeAction === 'edit'
         ? `Пицца "${pizza.name}" успешно изменена`
@@ -90,7 +70,7 @@ export function* addPizza({
       else yield put(addPizzasForAdmin(pizza));
     }
   } catch (error) {
-    console.log(error);
+    alert(error.message);
   }
 }
 

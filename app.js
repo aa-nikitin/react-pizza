@@ -10,7 +10,7 @@ app.use(express.json());
 
 const PORT = config.get('port') || 5000;
 
-app.use('/api', require('./routes/pizzas.routes'));
+app.use('/api', require('./routes'));
 app.use('/files', express.static(path.join(__dirname, 'files')));
 
 async function start() {

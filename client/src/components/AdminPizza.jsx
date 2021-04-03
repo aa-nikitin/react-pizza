@@ -78,7 +78,7 @@ const AdminPizzaWrapped = ({ id, imageUrl, name, types, sizes, category, rating,
 };
 
 AdminPizza.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   imageUrl: PropTypes.string,
   name: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.object),
@@ -93,7 +93,7 @@ AdminPizza.propTypes = {
 };
 
 AdminPizza.dafaultProps = {
-  id: 0,
+  id: '',
   imageUrl: '',
   name: '---',
   types: [],
@@ -108,7 +108,7 @@ AdminPizza.dafaultProps = {
 };
 
 AdminPizzaWrapped.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   imageUrl: PropTypes.string,
   name: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.object),
@@ -119,7 +119,7 @@ AdminPizzaWrapped.propTypes = {
 };
 
 AdminPizzaWrapped.dafaultProps = {
-  id: 0,
+  id: '',
   imageUrl: '',
   name: '---',
   types: [],

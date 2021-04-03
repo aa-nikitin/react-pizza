@@ -1,0 +1,37 @@
+.input-file {
+  display: flex;
+  align-items: center;
+  &__label {
+    order: 2;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    color: rgb(99, 99, 99);
+    transition-property: all;
+    transition-duration: 0.5s;
+    &:hover {
+      color: #fe5f1e;
+    }
+  }
+  &__file {
+  }
+  &__preview {
+    width: 100px;
+    display: block;
+    order: 1;
+    margin-right: 15px;
+    border: dashed #ccc 1px;
+    padding: 2px;
+    cursor: pointer;
+    transition-property: all;
+    transition-duration: 0.5s;
+    border-radius: 4px;
+    &:hover {
+      border-color: #fe5f1e;
+    }
+  }
+  &__img-preview {
+    max-width: 100%;
+    display: block;
+  }
+}

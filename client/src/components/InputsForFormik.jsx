@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import { InputNumber } from './';
+import { InputNumber, InputFile } from './';
 
 const colourStyles = {
   control: (styles, state) => ({
@@ -39,4 +39,13 @@ const RaitingNumber = ({ min, max, field, form }) => (
   />
 );
 
-export { SelectCategory, RaitingNumber };
+const FileUpload = ({ idFile, field, form }) => (
+  <InputFile
+    value={field.value}
+    onChange={(value) => form.setFieldValue(field.name, value.target.files[0])}
+    name={field.name}
+    idFile={idFile}
+  />
+);
+
+export { SelectCategory, RaitingNumber, FileUpload };

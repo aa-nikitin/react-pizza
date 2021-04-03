@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { categories as options } from '../constants';
-import { Portal, SelectCategory, RaitingNumber, Button } from './';
+import { Portal, SelectCategory, RaitingNumber, FileUpload, Button } from './';
 import { saveFetchPizza } from '../redux/actions';
 
 const PopupForm = ({
@@ -21,10 +21,11 @@ const PopupForm = ({
   typeAction
 }) => {
   const dispatch = useDispatch();
-  const validPrice = Yup.number()
-    .typeError('должно быть числом')
-    .min(0, 'не должно быть меньше 0')
-    .required('должно быть заполнено');
+  const validPrice = Yup.number().typeError('должно быть числом').min(0, 'не должно быть меньше 0');
+  // const onChangeFile = (e) => {
+  //   console.log(e.target.value);
+  //   console.log(e.target.files[0]);
+  // };
   return (
     <>
       {activePopup && (
@@ -57,15 +58,39 @@ const PopupForm = ({
               })}
               onSubmit={(values) => {
                 dispatch(saveFetchPizza({ ...values, typeAction, id }));
-                closePopup();
+                if (
+                  (!values.priceThin && !values.priceThick) ||
+                  (!values.priceSize26 && !values.priceSize30 && !values.priceSize40)
+                ) {
+                  // alert(
+                  //   'Необходимо что бы хотя бы один параметр цены был заполнен в толщине теста пицы и один параметр в диаметре пиццы'
+                  // );
+                } else {
+                  closePopup();
+                }
               }}>
               <Form>
                 <div className="field-pizza">
                   <label className="field-pizza__label" htmlFor="imagePizza">
                     Изображение
                   </label>
-                  <Field className="field-pizza__input" name="imagePizza" type="text" />
+                  <Field
+                    className="field-pizza__input"
+                    idFile="imagePizza"
+                    name="imagePizza"
+                    component={FileUpload}
+                  />
+                  {/* <label className="field-pizza__label" htmlFor="pizzaFile">
+                    Загрузить
+                  </label>
+                  <input onChange={onChangeFile} name="pizzaFile" id="pizzaFile" type="file" /> */}
                 </div>
+                {/* <div className="field-pizza">
+                  <label className="field-pizza__label" htmlFor="imagePizza">
+                    Изображение
+                  </label>
+                  <Field className="field-pizza__input" name="imagePizza" type="text" />
+                </div> */}
                 <div className="field-pizza">
                   <label className="field-pizza__label" htmlFor="namePizza">
                     Наименование пиццы
