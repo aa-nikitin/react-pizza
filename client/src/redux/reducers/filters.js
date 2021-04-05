@@ -1,12 +1,18 @@
 import { handleActions } from 'redux-actions';
 import { combineReducers } from 'redux';
-import { setSortBy, setCategory } from '../actions';
+import { setSortBy, setSortOrder, setCategory } from '../actions';
 
 const sortBy = handleActions(
   {
     [setSortBy]: (_state, { payload }) => payload
   },
-  'popular'
+  'rating'
+);
+const sortOrder = handleActions(
+  {
+    [setSortOrder]: (_state, { payload }) => payload
+  },
+  'desc'
 );
 
 const category = handleActions(
@@ -18,4 +24,4 @@ const category = handleActions(
 
 export const getFilters = ({ filters }) => filters;
 
-export default combineReducers({ sortBy, category });
+export default combineReducers({ sortBy, sortOrder, category });

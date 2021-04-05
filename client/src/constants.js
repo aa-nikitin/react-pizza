@@ -9,9 +9,9 @@ export const categories = [
 ];
 
 export const sortItems = [
-  { name: 'популярности', type: 'popular' },
-  { name: 'цене', type: 'price' },
-  { name: 'алфавиту', type: 'name' }
+  { name: 'популярности', type: 'rating', order: 'desc' },
+  { name: 'цене', type: 'price', order: 'asc' },
+  { name: 'алфавиту', type: 'name', order: 'asc' }
 ];
 
 export const pizzaImgStub = 'https://chaykov.velostrana.ru/assets/images/server_s_foto.svg';

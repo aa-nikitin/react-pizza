@@ -20,8 +20,8 @@ export function* loadPizzas() {
 
     if (refresh || !pizzasOld.length) {
       yield put(setLoaded(false));
-      const { sortBy, category } = yield select(getFilters);
-      const pizzas = yield call(fetchPizzas, category, sortBy);
+      const { sortBy, sortOrder, category } = yield select(getFilters);
+      const pizzas = yield call(fetchPizzas, category, sortBy, sortOrder);
       yield put(setPizzas(pizzas));
     }
     if (!refresh) yield put(setRefresh(true));

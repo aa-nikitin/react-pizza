@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-export const fetchPizzas = (category, sortBy) =>
+export const fetchPizzas = (category, sortBy, sortOrder) =>
   axios
     .get(
-      `/api/pizzas?${category !== null ? `category=${category}` : ''}&_sort=${sortBy}&_order=asc`
+      `/api/pizzas?${
+        category !== null ? `category=${category}` : ''
+      }&_sort=${sortBy}&_order=${sortOrder}`
     )
     .then(({ data }) => data);
 

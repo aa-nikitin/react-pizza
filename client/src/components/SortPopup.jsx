@@ -10,8 +10,8 @@ const SortPopup = memo(({ activeSortType, items, onClickSortType }) => {
     setVisiblePopup(!visiblePopup);
   };
 
-  const onSelectItem = (index) => {
-    onClickSortType(index);
+  const onSelectItem = (index, order) => {
+    onClickSortType(index, order);
     setVisiblePopup(false);
   };
 
@@ -50,7 +50,7 @@ const SortPopup = memo(({ activeSortType, items, onClickSortType }) => {
               return (
                 <li
                   className={index === activeSortType ? 'active' : ''}
-                  onClick={() => onSelectItem(obj.type)}
+                  onClick={() => onSelectItem(obj.type, obj.order)}
                   key={`${obj.type}_${index}`}>
                   {obj.name}
                 </li>

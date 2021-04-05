@@ -5,8 +5,11 @@ const Pizzas = require('../models/pizzas');
 
 module.exports.getPizzas = async (req, res) => {
   try {
-    const pizzas = await Pizzas.find({});
-    console.log(req.query);
+    const { category, _sort, _order } = req.query;
+    const findCategory = category ? { category: category } : {};
+    const orderSort = _order === 'asc' ? '' : '-';
+    const pizzas = await Pizzas.find(findCategory).sort(orderSort + _sort);
+
     res.json(pizzas);
   } catch (e) {
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' });

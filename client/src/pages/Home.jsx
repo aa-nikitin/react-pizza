@@ -2,7 +2,13 @@ import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Categories, SortPopup, PizzaBlock, PizzaLoadingBlock } from '../components';
-import { setFetchPizzas, setCategory, setSortBy, addPizzaToCart } from '../redux/actions';
+import {
+  setFetchPizzas,
+  setCategory,
+  setSortBy,
+  setSortOrder,
+  addPizzaToCart
+} from '../redux/actions';
 import { getPizzas, getFilters, getCartItems } from '../redux/reducers';
 import { categories as categoryNames, sortItems } from '../constants';
 
@@ -18,8 +24,9 @@ const Home = () => {
     [dispatch]
   );
   const onClickSortType = useCallback(
-    (index) => {
+    (index, order) => {
       dispatch(setSortBy(index));
+      dispatch(setSortOrder(order));
     },
     [dispatch]
   );
