@@ -5,7 +5,7 @@ import { Button } from '../';
 import { avalibleTypes, pizzaImgStub } from '../../constants';
 
 const PizzaBlock = ({
-  id,
+  _id,
   imageUrl,
   name,
   types,
@@ -25,7 +25,7 @@ const PizzaBlock = ({
   };
   const onAddPizza = () => {
     const obj = {
-      id,
+      _id,
       name,
       imageUrl,
       price: sumPrice(),

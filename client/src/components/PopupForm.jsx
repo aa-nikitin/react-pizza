@@ -7,7 +7,7 @@ import { Portal, SelectCategory, RaitingNumber, FileUpload, Button } from './';
 import { saveFetchPizza } from '../redux/actions';
 
 const PopupForm = ({
-  id,
+  _id,
   imageUrl,
   name,
   types,
@@ -29,7 +29,7 @@ const PopupForm = ({
   return (
     <>
       {activePopup && (
-        <Portal id={`edit-pizza-${id}`} clName="pop-up">
+        <Portal id={`edit-pizza-${_id}`} clName="pop-up">
           <div ref={popupRef} className="pop-up__workarea">
             <Formik
               initialValues={{
@@ -57,17 +57,16 @@ const PopupForm = ({
                   .required('Укажите рейтинг от 1 до 10')
               })}
               onSubmit={(values) => {
-                dispatch(saveFetchPizza({ ...values, typeAction, id }));
+                dispatch(saveFetchPizza({ ...values, typeAction, _id }));
                 if (
-                  (!values.priceThin && !values.priceThick) ||
-                  (!values.priceSize26 && !values.priceSize30 && !values.priceSize40)
-                ) {
-                  // alert(
-                  //   'Необходимо что бы хотя бы один параметр цены был заполнен в толщине теста пицы и один параметр в диаметре пиццы'
-                  // );
-                } else {
+                  !(
+                    (!Number(values.priceThin) && !Number(values.priceThick)) ||
+                    (!Number(values.priceSize26) &&
+                      !Number(values.priceSize30) &&
+                      !Number(values.priceSize40))
+                  )
+                )
                   closePopup();
-                }
               }}>
               <Form>
                 <div className="field-pizza">
@@ -80,17 +79,7 @@ const PopupForm = ({
                     name="imagePizza"
                     component={FileUpload}
                   />
-                  {/* <label className="field-pizza__label" htmlFor="pizzaFile">
-                    Загрузить
-                  </label>
-                  <input onChange={onChangeFile} name="pizzaFile" id="pizzaFile" type="file" /> */}
                 </div>
-                {/* <div className="field-pizza">
-                  <label className="field-pizza__label" htmlFor="imagePizza">
-                    Изображение
-                  </label>
-                  <Field className="field-pizza__input" name="imagePizza" type="text" />
-                </div> */}
                 <div className="field-pizza">
                   <label className="field-pizza__label" htmlFor="namePizza">
                     Наименование пиццы

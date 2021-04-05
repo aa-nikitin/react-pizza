@@ -105,12 +105,12 @@ const Cart = () => {
           </div>
           <div className="content__items">
             {addedPizzas.map((arr) => {
-              return arr.map(({ id, name, imageUrl, type, size, price, count, totalPrice }) => {
+              return arr.map(({ _id, name, imageUrl, type, size, price, count, totalPrice }) => {
                 // console.log(totalPrice);
                 return (
                   <CartItem
-                    key={`${id}-${type.id}-${size.id}`}
-                    id={id}
+                    key={`${_id}-${type.id}-${size.id}`}
+                    _id={_id}
                     name={name}
                     type={type.id}
                     size={size.id}

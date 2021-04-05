@@ -10,9 +10,9 @@ import {
 const pizzas = handleActions(
   {
     [setPizzasForAdmin]: (_state, { payload }) => payload,
-    [deletePizzasForAdmin]: (state, { payload }) => state.filter((item) => item.id !== payload),
+    [deletePizzasForAdmin]: (state, { payload }) => state.filter((item) => item._id !== payload),
     [changePizzasForAdmin]: (state, { payload }) =>
-      state.map((item) => (item.id === payload.id ? payload : item)),
+      state.map((item) => (item._id === payload._id ? payload : item)),
     [addPizzasForAdmin]: (state, { payload }) => [...state, payload]
   },
   []

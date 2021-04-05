@@ -34,15 +34,15 @@ const Admin = ({ activePopup, openPopup, closePopup, popupRef }) => {
           </Button>
         </div>
         <div className="admin-panel__items">
-          {pizzas.map(({ id, imageUrl, name, types, sizes, category, rating, description }) => {
+          {pizzas.map(({ _id, imageUrl, name, types, sizes, category, rating, description }) => {
             return (
               <AdminPizza
-                id={id}
+                _id={_id}
                 imageUrl={imageUrl}
                 name={name}
                 types={types}
                 sizes={sizes}
-                key={id}
+                key={_id}
                 category={category}
                 rating={rating}
                 description={description}

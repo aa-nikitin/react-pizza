@@ -7,15 +7,28 @@ export const fetchPizzas = (category, sortBy) =>
     )
     .then(({ data }) => data);
 
-export const fetchChangePizzas = (obj, id, typeAction) =>
-  axios
-    .post(`/api/pizzas${typeAction === 'edit' ? `/${id}` : ''}`, obj, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    .then(({ data }) => data.message)
-    .catch((e) => {
-      throw e.response.data;
-    });
-export const fetchDeletePizzas = (id) => axios.delete(`/pizzas/${id}`).then(({ data }) => data);
+export const fetchChangePizzas = (obj, _id, typeAction) => {
+  if (typeAction === 'edit')
+    return axios
+      .put(`/api/pizzas/${_id}`, obj, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(({ data }) => data)
+      .catch((e) => {
+        throw e.response.data;
+      });
+  else
+    return axios
+      .post(`/api/pizzas`, obj, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(({ data }) => data)
+      .catch((e) => {
+        throw e.response.data;
+      });
+};
+export const fetchDeletePizzas = (_id) => axios.delete(`/pizzas/${_id}`).then(({ data }) => data);

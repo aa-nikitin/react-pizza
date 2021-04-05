@@ -13,10 +13,11 @@ const InputFile = ({ name, idFile, onChange, value }) => {
 
     onChange(e);
   };
+
   return (
     <div className="input-file">
       <label className="input-file__label" htmlFor={idFile}>
-        {value ? value.name : 'Загрузить'}
+        {value && value.name ? value.name : 'Загрузить'}
       </label>
       <input
         hidden
@@ -27,9 +28,9 @@ const InputFile = ({ name, idFile, onChange, value }) => {
         onChange={handleChang}
         accept="image/x-png,image/jpeg"
       />
-      {previewFile && (
+      {(previewFile || (value && value.constructor === String)) && (
         <label className="input-file__preview" htmlFor={idFile}>
-          <img className="input-file__img-preview" src={previewFile} alt="" />
+          <img className="input-file__img-preview" src={previewFile ? previewFile : value} alt="" />
         </label>
       )}
     </div>

@@ -32,7 +32,7 @@ export function* loadPizzas() {
 
 export function* addPizza({
   payload: {
-    id,
+    _id,
     imagePizza,
     namePizza,
     priceThick,
@@ -46,7 +46,6 @@ export function* addPizza({
     description
   }
 }) {
-  // console.log(imagePizza);
   try {
     const formData = new FormData();
     formData.append('images', imagePizza);
@@ -59,7 +58,7 @@ export function* addPizza({
     formData.append('categoryPizza', categoryPizza);
     formData.append('raitingPizza', raitingPizza);
     formData.append('description', description);
-    const pizza = yield call(fetchChangePizzas, formData, id, typeAction);
+    const pizza = yield call(fetchChangePizzas, formData, _id, typeAction);
     const pizzaMsg =
       typeAction === 'edit'
         ? `Пицца "${pizza.name}" успешно изменена`

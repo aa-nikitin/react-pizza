@@ -9,7 +9,7 @@ const items = handleActions(
     [addPizzaToCart]: (state, { payload }) =>
       produce(state, (draft) => {
         const idPizzaCart = `${payload.type.id}-${payload.size.id}`;
-        draft[payload.id] = !draft[payload.id]
+        draft[payload._id] = !draft[payload._id]
           ? {
               [idPizzaCart]: {
                 ...payload,
@@ -18,14 +18,14 @@ const items = handleActions(
               }
             }
           : {
-              ...draft[payload.id],
+              ...draft[payload._id],
               [idPizzaCart]: {
                 ...payload,
-                count: draft[payload.id][idPizzaCart]
-                  ? draft[payload.id][idPizzaCart].count + 1
+                count: draft[payload._id][idPizzaCart]
+                  ? draft[payload._id][idPizzaCart].count + 1
                   : 1,
-                totalPrice: draft[payload.id][idPizzaCart]
-                  ? payload.price * (draft[payload.id][idPizzaCart].count + 1)
+                totalPrice: draft[payload._id][idPizzaCart]
+                  ? payload.price * (draft[payload._id][idPizzaCart].count + 1)
                   : payload.price
               }
             };
@@ -33,13 +33,14 @@ const items = handleActions(
     [clearCart]: () => {},
     [removeCartItem]: (state, { payload }) =>
       produce(state, (draft) => {
-        draft[payload.id] = _.omit(state[payload.id], [payload.idPizza]);
+        draft[payload._id] = _.omit(state[payload._id], [payload.idPizza]);
       }),
     [countCartItem]: (state, { payload }) => {
       return produce(state, (draft) => {
-        const price = draft[payload.id][payload.idPizza].price;
-        draft[payload.id][payload.idPizza].count = payload.count;
-        draft[payload.id][payload.idPizza].totalPrice = payload.count * price;
+        const price = draft[payload._id][payload.idPizza].price;
+
+        draft[payload._id][payload.idPizza].count = payload.count;
+        draft[payload._id][payload.idPizza].totalPrice = payload.count * price;
       });
     }
   },

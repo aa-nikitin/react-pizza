@@ -1,5 +1,6 @@
-const { v4: uuidv4 } = require('uuid');
+// const { v4: uuidv4 } = require('uuid');
 const handleFormData = require('../libs/handleFormData');
+const createPizzaObj = require('../libs/createPizzaObj');
 const Pizzas = require('../models/pizzas');
 
 module.exports.getPizzas = async (req, res) => {
@@ -14,54 +15,32 @@ module.exports.getPizzas = async (req, res) => {
 module.exports.setPizza = async (req, res) => {
   try {
     const fieldsFormData = await handleFormData(req);
-    const { filePath, fields } = fieldsFormData;
-    const {
-      name,
-      priceThick,
-      priceThin,
-      priceSize26,
-      priceSize30,
-      priceSize40,
-      categoryPizza,
-      raitingPizza,
-      description
-    } = fields;
-    const pizza = new Pizzas({
-      imageUrl: filePath,
-      name: name,
-      types: [
-        {
-          id: 0,
-          price: Number(priceThin)
-        },
-        {
-          id: 1,
-          price: Number(priceThick)
-        }
-      ],
-      sizes: [
-        {
-          id: 26,
-          price: Number(priceSize26)
-        },
-        {
-          id: 30,
-          price: Number(priceSize30)
-        },
-        {
-          id: 40,
-          price: Number(priceSize40)
-        }
-      ],
-      price: 300,
-      category: categoryPizza,
-      rating: raitingPizza,
-      description: description,
-      id: uuidv4()
-    });
+    const newPizzaObj = createPizzaObj(fieldsFormData);
+    const pizza = new Pizzas(newPizzaObj);
+
     await pizza.save();
-    await res.json({ message: pizza });
-    // res.json({});
+    await res.json(pizza);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+module.exports.editPizza = async (req, res) => {
+  try {
+    const fieldsFormData = await handleFormData(req);
+    const pizza = await Pizzas.findOne({ _id: req.params.id });
+    const newPizzaObj = createPizzaObj(fieldsFormData);
+
+    if (newPizzaObj.imageUrl) pizza.imageUrl = newPizzaObj.imageUrl;
+    pizza.name = newPizzaObj.name;
+    pizza.types = newPizzaObj.types;
+    pizza.sizes = newPizzaObj.sizes;
+    pizza.price = newPizzaObj.price;
+    pizza.category = newPizzaObj.category;
+    pizza.rating = newPizzaObj.rating;
+    pizza.description = newPizzaObj.description;
+    await pizza.save();
+    res.json(pizza);
   } catch (error) {
     res.status(500).json({ message: error });
   }

@@ -7,7 +7,7 @@ import { pizzaImgStub } from '../constants';
 import { deletePizza } from '../redux/actions';
 
 const AdminPizza = ({
-  id,
+  _id,
   imageUrl,
   name,
   types,
@@ -22,11 +22,11 @@ const AdminPizza = ({
 }) => {
   const dispatch = useDispatch();
   const delPizza = () => {
-    dispatch(deletePizza(id));
+    dispatch(deletePizza(_id));
   };
   return (
     <>
-      <div className="admin-panel__item admin-pizza" key={id}>
+      <div className="admin-panel__item admin-pizza" key={_id}>
         <div className="admin-pizza__img">
           <img className="admin-pizza__image" src={imageUrl ? imageUrl : pizzaImgStub} alt={name} />
         </div>
@@ -43,7 +43,7 @@ const AdminPizza = ({
         </div>
       </div>
       <PopupForm
-        id={id}
+        _id={_id}
         imageUrl={imageUrl}
         name={name}
         types={types}
@@ -60,11 +60,20 @@ const AdminPizza = ({
   );
 };
 
-const AdminPizzaWrapped = ({ id, imageUrl, name, types, sizes, category, rating, description }) => {
+const AdminPizzaWrapped = ({
+  _id,
+  imageUrl,
+  name,
+  types,
+  sizes,
+  category,
+  rating,
+  description
+}) => {
   const HOC = PopUpHoc(AdminPizza);
   return (
     <HOC
-      id={id}
+      _id={_id}
       name={name}
       types={types}
       sizes={sizes}
@@ -72,13 +81,13 @@ const AdminPizzaWrapped = ({ id, imageUrl, name, types, sizes, category, rating,
       category={category}
       rating={rating}
       description={description}
-      key={id}
+      key={_id}
     />
   );
 };
 
 AdminPizza.propTypes = {
-  id: PropTypes.string,
+  _id: PropTypes.string,
   imageUrl: PropTypes.string,
   name: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.object),
@@ -93,7 +102,7 @@ AdminPizza.propTypes = {
 };
 
 AdminPizza.dafaultProps = {
-  id: '',
+  _id: '',
   imageUrl: '',
   name: '---',
   types: [],
@@ -108,7 +117,7 @@ AdminPizza.dafaultProps = {
 };
 
 AdminPizzaWrapped.propTypes = {
-  id: PropTypes.string,
+  _id: PropTypes.string,
   imageUrl: PropTypes.string,
   name: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.object),
@@ -119,7 +128,7 @@ AdminPizzaWrapped.propTypes = {
 };
 
 AdminPizzaWrapped.dafaultProps = {
-  id: '',
+  _id: '',
   imageUrl: '',
   name: '---',
   types: [],

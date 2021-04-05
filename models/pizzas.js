@@ -23,8 +23,8 @@ const schema = new Schema({
   price: { type: Number, require: true },
   category: { type: Number, default: 0 },
   rating: { type: Number, default: 0 },
-  description: { type: String, default: '' },
-  id: { type: String, require: true, unique: true }
+  description: { type: String, default: '' }
+  // id: { type: String, require: true, unique: true }
 });
 
 module.exports = model('pizzas', schema);
