@@ -6,6 +6,7 @@ const Pizzas = require('../models/pizzas');
 module.exports.getPizzas = async (req, res) => {
   try {
     const pizzas = await Pizzas.find({});
+    console.log(req.query);
     res.json(pizzas);
   } catch (e) {
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' });
@@ -41,6 +42,16 @@ module.exports.editPizza = async (req, res) => {
     pizza.description = newPizzaObj.description;
     await pizza.save();
     res.json(pizza);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+module.exports.deletePizza = async (req, res) => {
+  try {
+    const resultDelete = await Pizzas.remove({ _id: req.params.id });
+
+    res.json(resultDelete);
   } catch (error) {
     res.status(500).json({ message: error });
   }

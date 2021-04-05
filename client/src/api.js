@@ -31,4 +31,5 @@ export const fetchChangePizzas = (obj, _id, typeAction) => {
         throw e.response.data;
       });
 };
-export const fetchDeletePizzas = (_id) => axios.delete(`/pizzas/${_id}`).then(({ data }) => data);
+export const fetchDeletePizzas = (_id) =>
+  axios.delete(`/api/pizzas/${_id}`).then(({ data }) => data);
